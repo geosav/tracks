@@ -1,45 +1,27 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Input, Button } from 'react-native-elements'
-import Spacer from '../components/Spacer';
+import NavLink from '../components/NavLink';
 import { Context as AuthContext } from '../context/AuthContext';
+import AuthForm from '../components/AuthForm';
+
 
 const SignupScreen = ({ navigation }) => {
     const { state, signup } = useContext(AuthContext);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    console.log(state);
 
     return (
         <View style={styles.container}>
-            <Spacer>
-                <Text h3>Sign Up for Tracker</Text>
-            </Spacer>
 
-            <Input
-                label="Email"
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                autoCorrect={false}
+            <AuthForm
+                headerText="Sign Up for Tracker"
+                errorMessage={state.errorMessage}
+                sumbitButtonText="Sign Up"
+                onSubmit={({ email, password }) => signup({ email, password })}
             />
 
-            <Spacer />
-
-            <Input
-                secureTextEntry
-                label="Password"
-                value={password}
-                onChangeText={setPassword}
-                autoCapitalize="none"
-                autoCorrect={false}
+            <NavLink
+                routeName="Signin"
+                text="Already have an account? Sign in instead!"
             />
-            {state.errorMessage ? <Text style={styles.errorMessage}>{state.errorMessage}</Text> : null}
-
-            <Spacer>
-                <Button title="Sign Up" onPress={() => signup({ email, password })} />
-            </Spacer>
         </View>
     );
 };
@@ -55,12 +37,6 @@ const styles = StyleSheet.create({
         marginBottom: 250,
         flex: 1,
         justifyContent: 'center'
-    },
-    errorMessage: {
-        marginLeft: 15,
-        marginTop: 15,
-        fontSize: 16,
-        color: 'red'
     }
 });
 
